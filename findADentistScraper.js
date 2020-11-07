@@ -14,17 +14,27 @@ rp(url)
         // console.log(html);
         console.log("test");
 
-        const names = $('.dentist-list__item__content').find('a').text();
-        console.log(names);
+        // const names = $('.dentist-list__item__content').find('a').text();
+        // const names = $('.dentist-list__item__content').find('a').text();
+        // console.log(names);
+        $('.dentist-list__content').each((i, ul) => {
+            const children = $(ul).children();
+            children.each((i, li) => {
+                const children = $(li).children();
+                children.each((i, a) => {
+                    // console.log($(a).attr('href'));
+                    console.log($(a).text());
+                })
+            })
+        })
+        // const specialities = $('.specialty').text();
+        // console.log(specialities);
 
-        const specialities = $('.specialty').text();
-        console.log(specialities);
+        // // const phoneNums = $('.phone').text();
+        // // console.log("phones " + phoneNums);
 
-        // const phoneNums = $('.phone').text();
-        // console.log("phones " + phoneNums);
-
-        const addresses = $('.address').text();
-        console.log(addresses);
+        // const addresses = $('.address').text();
+        // console.log(addresses);
         console.log("done");
     })
     .catch(function (err) {
