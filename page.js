@@ -20,48 +20,46 @@ rp(url)
             const children = $(ul).children();
             children.each(async (i, li) => {
                 let firstPageInfo = [];
+                const classes = ["specialty", "phone", "address", "miles"];
                 index = 0;
                 const children = $(li).children();
-                // console.log("children " + children);
+                console.log("children " + children);
                 const link = $(li).find('h2').find('a').attr('href');
-                //const link = console.log($(a).attr('href'));
-                // TODO: use a safer path joiner 
+                console.log("name " + $(li).find('h2').find('a').text());
                 const path = "https://findadentist.ada.org";
                 console.log("link : " + path + link);
-                //const pageRes = await visitDentistPage(path + link);
-                //console.log("result : " + pageRes[0]);
-                let arr = children.map((i, a) => {
-                    firstPageInfo.push({ title: $(a).text() })
-                });
-                // await Promise.all(async)
-                // children.each((i, a) => {
-                //     // console.log($(a).attr('href'));
-                //     let t = $(a).text().contents().map(function () {
-                //         return (this.type === 'text') ? $(this).text() + ' ' : '';
-                //     }).get();
-                //     console.log("t " + t);
-                //     //console.log("a: " + $(a));
-                //     //console.log($(a).text() + ",");
+                for (var i = 0; i < classes.length; i++) {
+                    const info = children.find("." + classes[i]).text();
 
-                //     // firstPageInfo.push($(a).text());
-                //     // index++;
-
-                // })
-                // TODO: move to own function
-                for (var i = 0; i < firstPageInfo.length; i++) {
-                    console.log("i " + i + " " + firstPageInfo[i]);
+                    firstPageInfo[i] = info;
                 }
+                for (var i = 0; i < firstPageInfo.length; i++) {
+                    console.log(firstPageInfo[i]);
+                }
+
+
+
             })
         })
         // test link
+        writeToJSON(firstPageInfo);
+
         // visitDentistPage("https://findadentist.ada.org//ga/fulton/atlanta/general-practice/dr-bruce-ashendorf-1649092");
 
     })
     .catch(function (err) {
         //handle error
     });
-
-
+// let firstPageInfo = ["Dentist", "890", "Road", "8.8"];
+// writeToJSON(firstPageInfo);
+function writeToJSON(values) {
+    console.log("write to json");
+    var obj = { info: [] };
+    obj.info.push({ 'specialty': values[0], 'phone': values[1], 'address': values[2], 'miles': values[3] });
+    var json = JSON.stringify(obj);
+    var fs = require('fs');
+    fs.writeFile('output.json', json, 'utf8', callback);
+}
 async function visitDentistPage(link) {
     const url = link;
     const res = [];
