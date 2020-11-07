@@ -11,30 +11,26 @@ const url = 'https://findadentist.ada.org/search-results?&address=' + 30301;
 rp(url)
     .then(function (html) {
         const $ = cheerio.load(html);
-        // console.log(html);
+
         console.log("test");
 
-        // const names = $('.dentist-list__item__content').find('a').text();
-        // const names = $('.dentist-list__item__content').find('a').text();
-        // console.log(names);
         $('.dentist-list__content').each((i, ul) => {
             const children = $(ul).children();
             children.each((i, li) => {
                 const children = $(li).children();
+                const link = $(li).find('h2').find('a').attr('href');
+                //const link = console.log($(a).attr('href'));
+                // TODO: use a safer path joiner 
+                const path = "https://findadentist.ada.org/";
+                console.log(path + link);
                 children.each((i, a) => {
                     // console.log($(a).attr('href'));
                     console.log($(a).text());
+
                 })
             })
         })
-        // const specialities = $('.specialty').text();
-        // console.log(specialities);
 
-        // // const phoneNums = $('.phone').text();
-        // // console.log("phones " + phoneNums);
-
-        // const addresses = $('.address').text();
-        // console.log(addresses);
         console.log("done");
     })
     .catch(function (err) {
