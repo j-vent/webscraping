@@ -38,13 +38,18 @@ rp(url)
                     console.log(firstPageInfo[i]);
                 }
                 // let res = await visitDentistPage(link);
+                let res = await test();
+                console.log(res);
+                // res.resolve().then(function (f) {
+                //     console.log(f[0]);
+                // })
                 // console.log("res " + res);
 
             })
         })
         // TODO: Get these other function calls async
         // visitDentistPage("https://findadentist.ada.org//ga/fulton/atlanta/general-practice/dr-bruce-ashendorf-1649092");
-        visitDentistPage("https://findadentist.ada.org/ga/dekalb/decatur/general-practice/dr-t-james-brown-3154033");
+        // visitDentistPage("https://findadentist.ada.org/ga/dekalb/decatur/general-practice/dr-t-james-brown-3154033");
         // writeToJSON(firstPageInfo);
     })
     .catch(function (err) {
@@ -61,7 +66,20 @@ function writeToJSON(values) {
 }
 
 const dentistInfo = []
-async function visitDentistPage(link) {
+function test() {
+    return new Promise((resolve, reject) => {
+        xurl = "https://findadentist.ada.org//ga/fulton/atlanta/general-practice/dr-bruce-ashendorf-1649092";
+        request(xurl, function (err, resp, body) {
+            if (err) { return reject(err); }
+            let $ = cheerio.load(body);
+            // let links = $('#container');
+            // let name = links.find('span[itemprop="name"]').html(); // name
+            resolve({ name: 'Man', links: 'link', url: xurl });
+        });
+    })
+}
+
+function visitDentistPage(link) {
     const url = link;
     const res = [];
     const unwantedDescriptors = ["Phone", "Email", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Address",
@@ -85,19 +103,20 @@ async function visitDentistPage(link) {
                 console.log("i " + i + "  " + dentistInfo[i]);
             }
             console.log("info" + JSON.stringify(dentistInfo));
-            // $('dd').each((index, element) => {
-            //     console.log($(element).text());
-            // });
-            // $('dl').each((i, dl) => {
-            //     console.log("fuck");
-            //     //var category = $('dt').innerHTML();
-            //     const children = $(dl).children();
-            //     console.log("dl " + children);
 
-            //     console.log("cat " + children.find('dt').text());
-            // })
-
-            console.log("done");
+            return new Promise((resolve, reject) => {
+                if (dentistInfo != null) {
+                    resolve(JSON.stringify(dentistInfo));
+                } else {
+                    reject("eror");
+                }
+                // return new Promise(resolve => {
+                //     setTimeout(() => {
+                //         resolve('resolved');
+                //     }, 2000);
+                // });
+            })
+            // console.log("done");
         }).catch(function (err) {
             //handle error
         });
